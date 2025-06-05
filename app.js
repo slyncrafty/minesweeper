@@ -3,11 +3,19 @@
 document.addEventListener('DOMContentLoaded', () => {
     const grid = document.querySelector('.grid');
     const flagHint = document.getElementById('hint');
+    const resetBtn = document.getElementById('reset');
+    resetBtn.addEventListener('click', resetGame);
     let width = 10;
-    let bombCount = 20;
+    let bombCount = 15;
     let flagCount = 0;
-    const cells = [];
+    let cells = [];
     let isGameOver = false;
+
+    startGame();
+
+
+
+
 
     // random shuffle function Fisher-Yates Shuffle
     function shuffle(array) {
@@ -61,10 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ** W  i  E    |   (i-1)            i            (i+1)
             ** SW S SE    |   (i-1+width)  (i+width)  (i+1+width)
             */ 
-            // 0  1  2  3  4  5  6  7  8  9
-            // 10 11 12 13 14 15 16 17 18 19
-            // 80 81 82 83 84 85 86 87 88 89
-            // 90 91 92 93 94 95 96 97 98 99
+
             if(cells[i].classList.contains('valid')) {
                 // Check cells on the W -- excluding leftEdges and check cell on the left
                 if( i > 0 && !isLeftEdge && cells[i - 1].classList.contains('bomb')) total++;
@@ -79,22 +84,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Check cells on the SW
                 if( i < 90 && !isLeftEdge && cells[i - 1 + width].classList.contains('bomb')) total++;
                 // Check cells on the SE
-                if( i < 88 && !isRightEdge && cells[i +1 + width].classList.contains('bomb')) total++;
+                if( i < 89 && !isRightEdge && cells[i +1 + width].classList.contains('bomb')) total++;
                 // Check cells on the S
                 if( i < 89 && cells[i + width].classList.contains('bomb')) total++;
                 
                 // total indicates the number of bomb surrounding the cell
                 cells[i].setAttribute('data', total); 
-                // console.log(cells[i]);  // debugging
             }
         }
         flagHint.textContent = bombCount - flagCount;
     }
 
 
+    function startGame() {
+        createBoard();
+    }
 
-    createBoard();
-
+    function resetGame() {
+        grid.replaceChildren();     // remove all div cells
+        cells = [];
+        flagCount = 0;
+        isGameOver = false;
+        resetBtn.textContent ='🙂';
+        createBoard();
+    }
 
 
     // add Flag with right click
@@ -176,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 getNextCell(nextCellId);
             }
             // Check cells on the SE
-            if( currentCellId < 88 && !isRightEdge) {
+            if( currentCellId < 89 && !isRightEdge) {
                 const nextCellId = currentCellId + width + 1;
                 getNextCell(nextCellId);
             }
@@ -192,13 +205,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Helper function
     function getNextCell(nextCellId) {
         const nextCell = document.getElementById(nextCellId);
-        console.log('yay')
+        // console.log('yay')   // debugging
         click(nextCell);
     }
 
     // Game over 
     function gameOver(cell) {
-        console.log('💣 Game Over! 💣');
+        // console.log('😵 Game Over! 💣');    
+        resetBtn.textContent = '😵';
         isGameOver = true;
 
         // reveal all bomb locations
@@ -217,7 +231,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 matches++;
             }
             if(matches === bombCount) {
-                console.log('You won!');
+                // console.log('You won!');
+                resetBtn.textContent = '😎';
                 isGameOver = true;
             }
         }

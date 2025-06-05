@@ -1,8 +1,31 @@
+/******************************************
+/* CSS
+/*******************************************/
+
+/* Box Model Hack */
+*{
+  box-sizing: border-box;
+}
+
+/******************************************
+/* LAYOUT
+/*******************************************/
+img{
+  display: block;
+  margin: 0 auto;
+}
+
+
+/******************************************
+/* ADDITIONAL STYLES
+/*******************************************/
 .container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
 .grid {
@@ -24,6 +47,23 @@
     border: 2px solid darkgrey;
     box-sizing: border-box;
     font-size: 2em;
+    cursor: pointer;
+}
+
+.grid div:hover {
+    background-color: lemonchiffon;
+
+}
+
+button {
+    padding: 0.5rem 1rem;
+    font-size: 2rem;
+    background-color: darkgreen;
+    border-radius: 10px;
+}
+
+button:hover {
+    background-color: lightseagreen;
 }
 
 /* .bomb {
@@ -32,4 +72,17 @@
 
 .checked {
     background-color: red;
+}
+
+h1 {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-color: blue;
+    text-align: center;
+    max-width: 1000px;
+    padding: 0.5rem;
+}
+
+
+.grid-wrapper {
+    min-width: 400px;
 }
